@@ -1,0 +1,40 @@
+<h1>Productos</h1>
+
+{{#each products.docs}}
+  <div class="product">
+    <h2>{{nombre}}</h2>
+    <p>Precio: {{precio}}</p>
+    <p>Tipo: {{tipo}}</p>
+    <button onclick="addToCart('{{_id}}')">Agregar al carrito</button>
+    <hr>
+  </div>
+{{/each}}
+
+{{!-- paginate --}}
+{{#if products.hasNextPage}}
+  <a href="/products?page={{products.nextPage}}">Siguiente pagina</a>
+{{/if}}
+
+<script>
+  function addToCart(productId) {
+    fetch('/carts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({ productId: productId })
+    })
+    .then(response => {
+      if (response.ok) {
+        // La solicitud se completó correctamente
+        console.log('Producto agregado al carrito');
+      } else {
+        console.error('Error al agregar el producto al carrito');
+      }
+    })
+    .catch(error => {
+      console.error('Error', error);
+    });
+  }
+</script>
