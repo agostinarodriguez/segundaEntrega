@@ -44,7 +44,6 @@ router.put('/:cid/products/:pid', async (req, res) => {
     const productId = req.params.pid;
     const { quantity } = req.body;
 
-    // Realizar operaciones para actualizar la cantidad del producto en el carrito
     const updatedCart = await Cart.findOneAndUpdate(
       { _id: cartId, 'products.product': productId },
       { $set: { 'products.$.quantity': quantity } },
